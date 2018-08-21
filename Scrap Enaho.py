@@ -3,7 +3,7 @@
 # Author: SSB
 # Last updated: July 26, 2018
 # I obtain raw data from the ENAHO survey from INEI's official webpage
-# Reference period: 1997-2017 (these are all the years for which the survey with an "updated" methodology is available)
+# Reference period: 1997-2017 (these are all the years for which the survey is available)
 ###########################################################################################################
 
 #import dbf
