@@ -130,12 +130,15 @@ print("This takes {0}s".format(ellapsed))
 #Less than 1s (=0 min)
 
 #4. Convert files for 1997-2003 ("ANTERIOR" class) from dbf to dta
+#Exception: module 05 files for years 2001-2003 are split into two dbf files (E1)
+def check_E1():
+    return (mod_code=="05" and (yy == 2001 or yy == 2002 or yy == 2003))
 start_time = time.time()
 errors=[]
 for mod_code in mod_codes:
     print("-  -  -  -  -  -  -  ")
     print(mod_code)
-    for yy in range(1997,2018):
+    for yy in range(1997,2017):
         print("----")
         print(yy)
         if yy <2003 and mod_code == "85":
@@ -143,20 +146,49 @@ for mod_code in mod_codes:
             continue
         os.chdir(root + "/" + "Enaho/in/Raw Data/module {0}/{1}".format(mod_code, yy))
         dbf_list = glob.glob("*.dbf".format(yy)) + glob.glob("*.DBF")
-        for file in dbf_list:
+        if check_E1() is False:
+            for file in dbf_list:
+                try:
+                    print("working on {0}".format(file))
+                    dbf_fn = "{0}".format(file)
+                    dta_fn = dbf_fn.split(".dbf")[0] + ".dta"
+                    df = Dbf5(dbf_fn).to_dataframe()
+                    df.columns = [column.lower() for column in df.columns]
+                    df.columns = [column.replace("\x00", "") for column in df.columns]
+                    df.columns = [column.replace(" ", "") for column in df.columns]
+                    df.to_stata(dta_fn,      encoding = "latin1")
+                    print("{0} converted to dta".format(file))
+                    #os.remove(dbf_fn)
+                except:
+                    print("{0} bugged, must convert manually".format(file))
+                    dbf_path = "module {0}/{1}".format(mod_code, yy) + dbf_fn
+                    errors.append(dbf_path)
+        else:
+            file1 = dbf_list[0]
+            file2 = dbf_list[1]
             try:
-                print("working on {0}".format(file))
-                dbf_fn = "{0}".format(file)
-                dta_fn = dbf_fn.split(".dbf")[0] + ".dta"
-                df = Dbf5(dbf_fn).to_dataframe()
-                df.columns = [column.lower() for column in df.columns]
-                df.columns = [column.replace("\x00", "") for column in df.columns]
-                df.columns = [column.replace(" ", "") for column in df.columns]
-                df.to_stata(dta_fn,      encoding = "latin1")
-                print("{0} converted to dta".format(file))
+                print("working on {0} and {1}".format(file1, file2))
+                dbf1_fn = "{0}".format(file1)
+                dbf2_fn = "{0}".format(file2)
+                dta1_fn = "{0}-1".format(yy) + ".dta"
+                dta2_fn = "{0}-2".format(yy) + ".dta"
+                dta_fn = "{0}".format(yy) + ".dta"
+                df1 = Dbf5(dbf1_fn).to_dataframe()
+                df2 = Dbf5(dbf2_fn).to_dataframe()
+                for current_df,current_dta in zip([df1, df2], [dta1_fn, dta2_fn]):
+                        print("{0}".format(current_df))
+                        print("{0}".format(current_dta))
+                        current_df.columns = [column.lower() for column in current_df.columns]
+                        current_df.columns = [column.replace("\x00", "") for column in current_df.columns]
+                        current_df.columns = [column.replace(" ", "") for column in current_df.columns]
+                        current_df.to_stata(current_dta,      encoding = "latin1")
+                merge_vars = ["conglome","vivienda","hogar","codperso"]
+                df = df1.merge(df2, on = merge_vars)
+                df.to_stata(dta_fn, encoding = "latin1")
+                print("{0} converted to dta".format(current_df))
                 #os.remove(dbf_fn)
             except:
-                print("{0} bugged, must convert manually".format(file))
+                print("{0} bugged, must convert manually".format())
                 dbf_path = "module {0}/{1}".format(mod_code, yy) + dbf_fn
                 errors.append(dbf_path)
 print("Data conversion complete. {0} errors:".format(len(errors))) #See Section 2
@@ -164,6 +196,10 @@ print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
 #380s (=6 min)
+
+#Current Bug:
+#Hypothesis: repeated variables
+df.to_stata(dta_fn,      encoding = "latin1")
 
 #5. Rename dta files for ease of looping
 start_time = time.time()
