@@ -197,10 +197,6 @@ ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
 #380s (=6 min)
 
-#Current Bug:
-#Hypothesis: repeated variables
-df.to_stata(dta_fn,      encoding = "latin1")
-
 #5. Rename dta files for ease of looping
 start_time = time.time()
 errors=[]
