@@ -59,7 +59,7 @@ for mod_code in mod_codes:
             else:
                 print("ERROR")
                 errors.append(url)
-print("Scrapping complete. {0} errors:".format(len(errors))) #If not 0, find and resolve errors
+print("Scrapping complete. {0} errors:".format(len(errors))) 
 print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
@@ -95,7 +95,7 @@ for mod_code in mod_codes:
                 print("could not extract {1} for year {0}".format(yy, file_name))
                 errors.append(file_name)
         zip_ref.close()
-print("Scrapping complete. {0} errors:".format(len(errors))) #If not 0, find errors. Some worth solving with code, others not.
+print("Scrapping complete. {0} errors:".format(len(errors))) 
 print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
@@ -123,7 +123,7 @@ for mod_code in mod_codes:
                     print("could not move {0}".format(file_path))
                 errors.append(file_path)
             shutil.rmtree(file_mod_yy + "/" + file_tree[0][1][0])
-print("Structuring complete. {0} errors:".format(len(errors))) #See Section 2
+print("Structuring complete. {0} errors:".format(len(errors)))
 print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
@@ -191,7 +191,7 @@ for mod_code in mod_codes:
                 print("{0} bugged, must convert manually".format())
                 dbf_path = "module {0}/{1}".format(mod_code, yy) + dbf_fn
                 errors.append(dbf_path)
-print("Data conversion complete. {0} errors:".format(len(errors))) #See Section 2
+print("Data conversion complete. {0} errors:".format(len(errors)))
 print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
@@ -202,7 +202,7 @@ start_time = time.time()
 errors=[]
 for mod_code in mod_codes:
     for yy in range(1997,2018):
-        if mod_code == "85": #we deal with files from this module in a special manner: convert the "yy-1" dataset
+        if mod_code == "85": #we deal with files from this module in a special way: convert the "yy-1" dataset
             if yy<2003:
                 print("module 85 not available for this year")
                 continue
