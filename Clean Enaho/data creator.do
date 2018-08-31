@@ -1,4 +1,3 @@
-*con use using se puede reducir notablemente el runtime
 clear all
 set more off
 global ccc_dofiles "/Users/Sebastian/Documents/Papers/Mines SSB/00_Data/Programs/Data Hogares/Clean Raw"
@@ -31,6 +30,3 @@ foreach file of local trash_files{
 	}
 timer off 1
 timer list
-
-*Falta: mejorar la interfaz del programa con comandos display y prefijos quietly/capture en ciertas lineas
-
