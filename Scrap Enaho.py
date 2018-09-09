@@ -39,6 +39,11 @@ mod_codes = ["01","02","03","05","34","85"]
 
 root = "/Users/Sebastian/Documents/Papers/Mines SSB/00_Data"
 os.chdir(root)
+try: 
+    shutil.rmtree("Trash")
+except:
+    print("File does not exist yet")
+os.mkdir("Trash")
 
 #1. Scrap zip files
 start_time = time.time()
