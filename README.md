@@ -8,3 +8,6 @@ Instructions:
 2. Clean raw data using the program "data creator.do" [requires Stata]
 
 Information available from the author at sebastiansardonbisso@gmail.com. Suggestions are welcome.
+
+Here is an example of the information contained performed on the output dataset:
+![](images/1_educ.png)
