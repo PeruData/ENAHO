@@ -5,7 +5,7 @@ These programs create a dataset covering a large and nationally representative s
 
 Instructions:\
     Step 1. Retrieve raw data from INEI's official webpage using the program "Scrap Enaho.py" [requires Python 3] \
-    Step 2. Clean raw data using the program "data creator.do" [requires Stata]\
+    Step 2. Clean raw data using the program "data creator.do" [requires Stata]
 
 Information available from the author at sebastiansardonbisso@gmail.com. Suggestions are welcome.
 
