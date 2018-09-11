@@ -9,5 +9,5 @@ Instructions:\
 
 Information available from the author at sebastiansardonbisso@gmail.com. Suggestions are welcome.
 
-Here is an example of the information contained on the output dataset (Step 2):
+Here is an example of the information contained in the output dataset (Step 2):
 ![](images/1_educ.png)
