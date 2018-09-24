@@ -8,6 +8,18 @@ global ccc_root    "/Users/Sebastian/Documents/Papers/Mines SSB/00_Data"
 
 timer on 1
 
+*This is similar to "destring", but handles bugged cases properly (value = . for these cases)
+cap program drop destring2
+program define destring2
+    syntax anything
+	local type: type `anything'
+	if substr("`type'",1,3) == "str" {
+	    gen `anything'_new = real(`anything')
+	    drop `anything'
+	    rename `anything'_new `anything'
+		}
+end
+
 foreach i in 1 2 3 5{
 	qui do "$ccc_dofiles/prepare_`i'00.do"
 	di     "prepare module `i'00 qui DONE"
