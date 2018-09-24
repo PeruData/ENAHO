@@ -1,6 +1,3 @@
-global ccc "/Users/Sebastian/Documents/Papers/Mines SSB/00_Data"
-cd "$ccc"
-
 *This is similar to "destring", but handles bugged cases properly (value = . for these cases)
 cap program drop destring2
 program define destring2
