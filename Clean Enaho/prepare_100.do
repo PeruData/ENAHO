@@ -1,15 +1,3 @@
-*This is similar to "destring", but handles bugged cases properly (value = . for these cases)
-cap program drop destring2
-program define destring2
-    syntax anything
-	local type: type `anything'
-	if substr("`type'",1,3) == "str" {
-	    gen `anything'_new = real(`anything')
-	    drop `anything'
-	    rename `anything'_new `anything'
-		}
-end
-
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 *1. Clean
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
