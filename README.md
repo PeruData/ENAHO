@@ -9,7 +9,7 @@ Instructions:\
 
 Step 1's output can be downloaded [here](https://www.dropbox.com/sh/qvrws0dhshphcx6/AACOtIi1CXRA615O6L0n1QKYa?dl=0).
 
-Information available from the author at sebastiansardonbisso@gmail.com. Suggestions are welcome.
+Information available from the authors at sebastiansardonbisso@gmail.com. Suggestions are welcome.
 
 Here is an example of the information contained in the output dataset (Step 2):
 ![](images/1_educ.png)
