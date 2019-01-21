@@ -47,8 +47,8 @@ forvalues yy=1997/2017{
 *3. Generate household-level variables
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 
-gen poor     = (pobreza == 1)
-gen poor_ext = (pobreza <= 2)
+gen poor_ext = (pobreza == 1)
+gen poor     = (pobreza <= 2)
 gen no_poor  = (pobreza == 3)
 
 *Based on Aragon & Rud (AEJ:EP 2013)
