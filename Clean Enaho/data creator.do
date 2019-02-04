@@ -31,7 +31,7 @@ di     "prepare modulo sumaria DONE"
 qui do "$ccc_dofiles/merge data_house.do"
 qui do "$ccc_dofiles/merge data_person.do"
 di "merge qui DONE"
-
+drop _merge
 save "$ccc_out/1997-2017.dta", replace
 
 *Take out the trash (uncomment line in loop)
