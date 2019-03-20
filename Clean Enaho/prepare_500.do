@@ -18,6 +18,7 @@
 		*fac500a7/fac500a = "factor of labor module - 2007 Census" (often missing)
 		*missing factors: 1998 and 1999
     *------------------------------------------------------------------------------------------
+	
 *missing ocu500: 1998, 1999 and 2000
 local key_vars conglome vivienda hogar
 forvalues yy = 1997/2017 {
@@ -26,7 +27,6 @@ forvalues yy = 1997/2017 {
 	if `yy' == 1997 {
 	    local use_vars_97 con viv hog codpers2 factorem ocupa ocprinci ocpciiuu ocpcateg ocphorto indpago ingdliq ingindep ingsecun
 	    use `use_vars_97' using "Enaho/in/Raw Data/module 05/`yy'/`yy'.dta", clear
-		*use `use_vars_97' using "Enaho/in/Raw Data/module 05/`yy'/`yy'_spss.dta", clear
 	    rename con      conglome
 		rename viv      vivienda
 		rename hog      hogar
@@ -51,26 +51,20 @@ forvalues yy = 1997/2017 {
 	local use_questions p505* p506* p507 p513t p523 p524a1 p530a p538a1 p541a
 	if `yy' == 1998 | `yy' == 1999 {
         use `key_vars' codperso `use_questions' using "Enaho/in/Raw Data/module 05/`yy'/`yy'.dta", clear	
-		*use `key_vars' codperso fac_empl `use_questions' using "Enaho/in/Raw Data/module 05/`yy'/`yy'_spss.dta", clear	
-		*rename fac_empl fac500
 		gen ocu500 =.
 		gen fac500=.
 		}
 	if `yy' == 2000 {
         use `key_vars' codperso fac* `use_questions' using "Enaho/in/Raw Data/module 05/`yy'/`yy'.dta", clear	
-		*use `key_vars' codperso fac* `use_questions' using "Enaho/in/Raw Data/module 05/`yy'/`yy'_spss.dta", clear	
 		gen ocu500 =.
 		}
 	if `yy'>=2001 {
-		*if `yy' <=2006    use `key_vars' codperso fac* ocu500 `use_questions' using "Enaho/in/Raw Data/module 05/`yy'/`yy'_spss.dta", clear	
-		*else           use `key_vars' codperso fac* ocu500 `use_questions' using "Enaho/in/Raw Data/module 05/`yy'/`yy'.dta", clear	
 		use `key_vars' codperso fac* ocu500 `use_questions' using "Enaho/in/Raw Data/module 05/`yy'/`yy'.dta", clear	
 		}
 	gen year=`yy'
 	
 	*Harmonizes sample weight variables
 		if `yy' == 2011  {
-		*if `yy' == 2011  | `yy' == 2001 | `yy' == 2002 | `yy' == 2003 | `yy' ==2005 {
 			rename fac500a7 fac500a
 			}
 		if `yy' == 2001 | `yy' == 2002 | `yy' == 2003 {
@@ -79,7 +73,7 @@ forvalues yy = 1997/2017 {
 			}
 	foreach var in `key_vars' codperso {
 	    cap decode `var',replace
-	    destring2 `var'
+	    destring `var', force replace //manually verified that non-numeric data points are irrelevant
 		}
 	keep year `key_vars' codperso fac* ocu500 `use_questions'
 	save "Trash/tmp_`yy'.dta", replace

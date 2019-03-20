@@ -106,7 +106,7 @@ forvalues yy = 1997/2017 {
 	label values urban urban
 	
 	foreach var in `key_vars' ubigeo {
-	    destring2 `var'
+	    destring `var', force replace //manually verified that non-numeric data points are irrelevant
 		}
 	sort year `key_vars'
 	

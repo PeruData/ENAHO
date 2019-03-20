@@ -1,4 +1,4 @@
-*-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+*-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - 
 *1. Clean
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 local key_vars conglome vivienda hogar
@@ -68,7 +68,7 @@ forvalues yy = 1997/2017{
 	label values g_age g_age 
 	
     foreach var in conglome vivienda hogar codperso born_ubigeo {
-	    destring2 `var'
+	    destring `var', force replace //manually verified that non-numeric data points are irrelevant
 		}
 	replace born_ubigeo=. if born_ubigeo<10101 | born_ubigeo==806001 | born_ubigeo== 999999
 	

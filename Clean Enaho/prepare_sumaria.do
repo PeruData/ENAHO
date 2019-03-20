@@ -1,3 +1,4 @@
+*missing ocu500: 1998, 1999 and 2000
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 *1. Clean
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - 
@@ -27,7 +28,7 @@ forvalues yy=1997/2017{
 	gen year=`yy'
 	
 	foreach var in `key_vars' {
-	    destring2 `var'
+	    destring `var', force replace //manually verified that non-numeric data points are irrelevant
 		}
 	sort year `key_vars'
 	
