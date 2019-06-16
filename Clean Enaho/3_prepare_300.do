@@ -2,7 +2,7 @@
 *1. Clean
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 local key_vars conglome vivienda hogar	
-forvalues yy = 1997/2017 {
+forvalues yy = 1997/2018 {
 	*Renames based on survey's official documentation (translating names using .doc files for 1997-1998)	
 	if `yy' == 1997 {
 	    local use_vars_97 con viv hog p300n niveduca anoaprob leeescri
@@ -99,12 +99,12 @@ forvalues yy = 1997/2017 {
 *2. Append
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 clear
-forvalues yy=1997/2017{
+forvalues yy=1997/2018{
 	append using "Trash/tmp_`yy'.dta"
     }
 keep if !missing(codperso)
 compress
-forvalues yy=1997/2017{
+forvalues yy=1997/2018{
 	erase "Trash/tmp_`yy'.dta"
     }
 
