@@ -21,7 +21,7 @@
 	
 *missing ocu500: 1998, 1999 and 2000
 local key_vars conglome vivienda hogar
-forvalues yy = 1997/2017 {
+forvalues yy = 1997/2018 {
     di "doing `yy'"
 	*Renames based on survey's official documentation (translating names using .doc files for 1997-1998)	
 	if `yy' == 1997 {
@@ -83,12 +83,12 @@ forvalues yy = 1997/2017 {
 *2. Append
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  	
 clear
-forvalues yy = 1997/2017 {
+forvalues yy = 1997/2018 {
 	append using "Trash/tmp_`yy'.dta", force 
 	}
 keep if !missing(codperso)	
 compress
-forvalues yy=1997/2017{
+forvalues yy=1997/2018{
 	erase "Trash/tmp_`yy'.dta"
 	}
 
@@ -142,7 +142,7 @@ forvalues yy=1997/2017{
 		gen p506r4_str = string(p506r4)
 		replace p506r4_str = "0" + p506r4_str if length(p506r4_str) ==3
 		gen ciiu_code =  substr(p506r4_str, 1, 2)
-		*This imputes the variable for years 1997-2006 using 2007-2016 data and old-coded variable
+		*This imputes the variable for years 1997-2006 using 2007-2018 data and old-coded variable
 		preserve
 		    keep if year>2006
 			*TO DO: robustness to alternative conversion algorithm, current is mode (min mode if many modes)
@@ -172,7 +172,7 @@ forvalues yy=1997/2017{
 		replace ciuo_code = "" if ciuo_code == "."
 		
 		*3.4.4 Create groups using (2.4.2) and (2.4.3)'s output
-		qui do "$ccc_dofiles/prepare_500_ciuo_ciiu.do"
+		qui do "$ccc_dofiles/4_1_prepare_500_ciuo_ciiu.do"
 		
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 *3. Variable Labels
@@ -194,4 +194,4 @@ label var y_mkt         "Monetary labor market incom (monthly, current PEN)"
 
 compress
 keep year `key_vars' codperso fac* g_ciiu g_hl_ciiu g_ciuo mkt_work_pri ocu500 self_employed y_pri y_pri_h y_sec y_mkt p523 p524a1
-save "$ccc/Trash/data_500.dta", replace
+save "Trash/data_500.dta", replace
