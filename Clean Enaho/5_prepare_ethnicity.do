@@ -8,13 +8,12 @@ program define clean_ethnicity
 	rename new_ethnicity ethnicity
 	end
 	
-	
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 *1. Clean yearly
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 	
 forvalues yy = 2004/2006 {
-    use "Enaho/in/Raw Data/module 85/`yy'/enaho01b-`yy'-3.dta", clear
+    use "$ccc_in/module 85/`yy'/enaho01b-`yy'-3.dta", clear
 	gen year = `yy'
 	rename p46 ethnicity
 	tabmiss ethnicity
@@ -24,7 +23,7 @@ forvalues yy = 2004/2006 {
 	} 
 
 forvalues yy = 2007/2011 {
-    use "Enaho/in/Raw Data/module 85/`yy'/enaho01b-`yy'-2.dta", clear
+    use "$ccc_in/module 85/`yy'/enaho01b-`yy'-2.dta", clear
 	gen year = `yy'
 	rename p46 ethnicity
 	clean_ethnicity
@@ -33,7 +32,7 @@ forvalues yy = 2007/2011 {
 	}
 	
 forvalues yy = 2012/2017 {
-    use "Enaho/in/Raw Data/module 05/`yy'/`yy'.dta", clear
+    use "$ccc_in/module 05/`yy'/`yy'.dta", clear
 	keep if p203 == 1
 	gen year = `yy'
 	rename p558c ethnicity
