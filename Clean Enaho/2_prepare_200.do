@@ -2,7 +2,7 @@
 *1. Clean
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 local key_vars conglome vivienda hogar
-forvalues yy = 1997/2017{
+forvalues yy = 1997/2018{
 	*Renames based on survey's official documentation (translating names using .doc files for 1997-1998)	
 	if `yy' == 1997 {
 	    local use_vars_97 s2con s2viv s2hog codperso edad edadtiem parentes miembro sexo
@@ -45,8 +45,14 @@ forvalues yy = 1997/2017{
 	
 	rename  p208a  age
 		
-	rename  p208a1 born_here 
-    rename  p208a2 born_ubigeo
+	if `yy' == 2018 {
+	    gen born_here   = .
+		gen born_ubigeo = .
+		}
+	else {
+	    rename  p208a1 born_here 
+        rename  p208a2 born_ubigeo
+	    }
 	
 	
 	gen 	     g_cohort =  1  if year_born>=1951 & year_born<=1960
@@ -79,12 +85,12 @@ forvalues yy = 1997/2017{
 *2. Append
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 clear
-forvalues yy = 1997/2017{
+forvalues yy = 1997/2018 {
 	append using "Trash/tmp_`yy'.dta"
     }
 keep if !missing(codperso)
 compress	
-forvalues yy = 1997/2017 {
+forvalues yy = 1997/2018 {
 	erase "Trash/tmp_`yy'.dta"
     }
 
