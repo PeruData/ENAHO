@@ -5,10 +5,11 @@
 *Missing values for certain month-years are 100% by design 
 *Do Manski bounds on these
 
-*These variables' names are stable across 1997-2017
+*These variables' names are stable across 1997-2018
 local key_vars conglome vivienda hogar
 local use_vars_97_17 gashog1d gashog2d gru11hd gru21hd gru31hd gru41hd gru51hd gru61hd gru71hd gru81hd ingmo1hd inghog2d mieperho pobreza
-forvalues yy=1997/2017{
+forvalues yy=1997/2018{
+di `yy'
 	*Renames based on survey's official documentation (translating names using .doc files for 1997-1998)	
 	if `yy' == 1997 {    
 	    local use_vars_97 con viv hog  linea97 linpe97 factorho `use_vars_97_17'
@@ -20,7 +21,15 @@ forvalues yy=1997/2017{
 		}
 	local use_vars `key_vars' fac* linea linpe mieperho `use_vars_97_17'
 	if `yy' >= 1998 {
+	    if `yy' == 2017 {  //TO FIX
+		    local use_vars `key_vars' fac*  mieperho gashog1d gashog2d gru11hd gru21hd gru31hd gru41hd gru51hd gru61hd gru71hd gru81hd ingmo1hd inghog2d mieperho
+			}
         use `use_vars' using "Enaho/in/Raw Data/module 34/`yy'/`yy'.dta", clear	
+		if `yy' == 2017 {  //TO FIX
+		    gen linea = .
+			gen linpe = .
+			gen pobreza = .
+			}
 		}
 	*Sometimes linea/linpe variables have names codified with a structure "linea`yy'" 
 	rename linea* linea
@@ -40,7 +49,7 @@ forvalues yy=1997/2017{
 *2. Append
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 clear
-forvalues yy=1997/2017{	
+forvalues yy=1997/2018{	
 	append using "Trash/tmp_`yy'.dta"
 	}	
 
@@ -113,9 +122,7 @@ compress
 
 *cleaning 
 
-forvalues yy=1997/2017{
+forvalues yy=1997/2018{
 	erase "Trash/tmp_`yy'.dta"
     }
 save "Trash/data_sumaria.dta", replace
-
-
