@@ -40,12 +40,11 @@ mod_codes = ["01","02","03","05","34","85"]
 root = "/Users/Sebastian/Documents/Papers/Mines/00_Data"
 os.chdir(root)
 try:
-    shutil.rmtree("Trash")
+    os.mkdir("Trash")
 except:
-    print("File does not exist yet")
-os.mkdir("Trash")
+    print("Folder already exists")
 
-#1. Scrap zip files
+#1. Scrape zip files
 start_time = time.time()
 errors = []
 for yy in range(1997,2019):
@@ -66,7 +65,7 @@ print("Scrapping complete. {0} errors:".format(len(errors)))
 print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
-#Around 500s  (=8 min)
+#Around 568s  (=9 min)
 
 #2. Extract zip files
 start_time = time.time()
@@ -90,7 +89,7 @@ for yy in range(1997,2019):
             os.mkdir(new_dir)
         except:
             os.mkdir(new_dir)
-        print("extracting data for module {0} - year {1}".format(mod_code, yy))
+        print("extracting data for year {0} - module {1}".format(yy, mod_code))
 
         zip_ref = zipfile.ZipFile("Trash/module {0} {1}.zip".format(mod_code, yy))
         for file_name in zip_ref.namelist():
@@ -139,10 +138,8 @@ def check_E1():
     return (mod_code=="05" and (yy == 2001 or yy == 2002 or yy == 2003))
 start_time = time.time()
 errors=[]
-for mod_code in mod_codes:
-    print("-  -  -  -  -  -  -  ")
-    print(mod_code)
-    for yy in range(1997,2019):
+for yy in range(1997,2019):
+    for mod_code in mod_codes:
         print("----")
         print(yy)
         if yy <2003 and mod_code == "85":
@@ -204,8 +201,8 @@ print("This takes {0}s".format(ellapsed))
 #5. Rename dta files for ease of looping
 start_time = time.time()
 errors=[]
-for mod_code in mod_codes:
-    for yy in range(1997,2019):
+for yy in range(1997,2019):
+    for mod_code in mod_codes:
         if mod_code == "85": #we deal with files from this module in a special way: convert the "yy-1" dataset
             if yy<2003:
                 print("module 85 not available for this year")
@@ -227,8 +224,12 @@ ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
 #Less than 1s
 
-#6 Take out the Trash
+#6 Remove Trash
+os.chdir(root)
 for yy in range(1997,2019):
     for mod_code in mod_codes:
         zip_file = "Trash/module {0} {1}.zip".format(mod_code, yy)
-os.remove(zip_file)
+        try:
+            os.remove(zip_file)
+        except:
+            print("no temporary files found for year {0} - module {1}".format(yy, mod_code))
