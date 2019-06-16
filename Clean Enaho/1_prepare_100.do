@@ -3,12 +3,12 @@
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 local raw_tokeep p101 p102 p103 p104 p105a p105b d105b i105b p106 d106 i106      
 local key_vars   conglome vivienda hogar
-forvalues yy = 1997/2017 {
+forvalues yy = 1997/2018 {
     di "year `yy'"
 	di " "
-	*Renames based on survey's official documentation (translating names using .doc files for 1997-1998)	
+	*Renames based on survey's official documentation
 	if `yy' == 1997 {
-	    use "Enaho/in/Raw Data/module 01/`yy'/`yy'.dta", clear
+	    use "$ccc_in/module 01/`yy'/`yy'.dta", clear
 		rename s1con conglome
 		rename s1viv vivienda
 		rename s1hog hogar
@@ -22,7 +22,7 @@ forvalues yy = 1997/2017 {
 		rename tiencelu p1142
 		rename alumbra1 p1121
 		
-		rename tipvivie  p101
+		rename tipvivie p101
 		rename matpared p102
 		rename matpiso  p103
 		rename tothabit p104
@@ -35,21 +35,19 @@ forvalues yy = 1997/2017 {
 		rename alqme2de d106
 		rename alqme2im i106
 		
-		*TO WORK ON:----------
 		rename fecentre date
-		*----------------------
 		}	
 	else if `yy' == 1998 {
 	    local use_vars `key_vars' `raw_tokeep' p110 p111 p1121 p1141 p1142 estrato dominio result*  ubigeo
-	    use `use_vars' using "Enaho/in/Raw Data/module 01/`yy'/`yy'.dta", clear
+	    use `use_vars' using "$ccc_in/module 01/`yy'/`yy'.dta", clear
 		}
 	else if `yy' == 2001 {
 	    local use_vars `key_vars' `raw_tokeep' p110 p111 p1121 p1141 p1142 estrato dominio result*  ubigeo fecha
-	    use `use_vars' using "Enaho/in/Raw Data/module 01/`yy'/`yy'.dta", clear
+	    use `use_vars' using "$ccc_in/module 01/`yy'/`yy'.dta", clear
 		}
 	else {
 	    local use_vars `key_vars' `raw_tokeep' p110 p111 p1121 p1141 p1142 estrato dominio result*  ubigeo fecent*
-	    use `use_vars' using "Enaho/in/Raw Data/module 01/`yy'/`yy'.dta", clear
+	    use `use_vars' using "$ccc_in/module 01/`yy'/`yy'.dta", clear
 		}
 	gen year = `yy'	
 	if `yy'>= 1998 & `yy'  <= 2002 {
@@ -79,9 +77,10 @@ forvalues yy = 1997/2017 {
 	gen     phone =     (p1141==1 | p1142==1)
 	replace phone = . if p1141==. | p1142==.
 	
-	*town_size variable "estrato" does not have stable levels across the full 1997-2017 period
+	
+	*town_size variable "estrato" does not have stable levels across the full 1997-2018 period
 	*solution: follow Aragon & Rud (AEJ:EP 2013) for 1997-2015 (note that they classify towns with 400 pop or less as "urban")
-	*on 2016 coding of the variable changed, so must write code for 2016 and 2017, here we prioritize comparability across years
+	*on 2016 coding of the variable changed, so must write code for 2016-2018; here we prioritize comparability across years
 	
 	if `yy' <= 2000 {
 		rename estrato town_size
@@ -96,7 +95,7 @@ forvalues yy = 1997/2017 {
 		recode town_size 1=5 2=5 3=5 4=5 5=4 6=3 7=2 8=1
 	    }
 	*note that these categories don't necessarily hold outside 2002-2015 period 
-	*    in 2016-2017 they do approximately, by design: the only difference is that "small urban" denotes pop < 2k (4k threshold not available) [TO FIX!]
+	*    in 2016-2018 they do approximately, by design: the only difference is that "small urban" denotes pop < 2k (4k threshold not available) [TO FIX!]
 	*    also, urban towns with less than 400 pop no longer exist (likely they are all classified as rural starting from 2016, but this is not explicit in the documentation)
 	label define town_size 1 "Small rural" 2 "Large rural" 3 "Small urban (pop < 4k)" 4 " Medium urban (pop in [4k,20k])" 5 "Large urban (pop>20k)"
 	label values town_size town_size
@@ -118,11 +117,11 @@ forvalues yy = 1997/2017 {
 *2. Append
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  	
 clear
-forvalues yy=1997/2017{
+forvalues yy=1997/2018{
 	append using "Trash/tmp_`yy'.dta"
 	}
 compress	
-forvalues yy=1997/2017{
+forvalues yy=1997/2018{
 	erase "Trash/tmp_`yy'.dta"
 	}
 
