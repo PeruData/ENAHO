@@ -1,9 +1,9 @@
 ###########################################################################################################
 # Peruvian Households Dataset
-# Author: SSB
-# Last updated: July 26, 2018
-# I obtain raw data from the ENAHO survey from INEI's official webpage
-# Reference period: 1997-2017 (these are all the years for which the survey is available)
+# Author: Sebastian Sardon
+# Last updated: June 16, 2019
+# Retrieves raw ENAHO data from INEI's official website
+# Reference period: 1997-2018 (these are all the years for which complete surveys are available)
 ###########################################################################################################
 
 #import dbf
@@ -33,13 +33,13 @@ survey_codes = {
      "enaho_2011": "291", "enaho_2012": "324",
      "enaho_2013": "404", "enaho_2014": "440",
      "enaho_2015": "498", "enaho_2016": "546",
-     "enaho_2017": "603"
+     "enaho_2017": "603", "enaho_2018": "634"
 }
 mod_codes = ["01","02","03","05","34","85"]
 
-root = "/Users/Sebastian/Documents/Papers/Mines SSB/00_Data"
+root = "/Users/Sebastian/Documents/Papers/Mines/00_Data"
 os.chdir(root)
-try: 
+try:
     shutil.rmtree("Trash")
 except:
     print("File does not exist yet")
@@ -48,23 +48,21 @@ os.mkdir("Trash")
 #1. Scrap zip files
 start_time = time.time()
 errors = []
-for mod_code in mod_codes:
-    for yy in range(1997,2018):
+for yy in range(1997,2019):
+    for mod_code in mod_codes:
         if yy < 2004: kind = "DBF"
         else:         kind   = "STATA"
         print("retrieving data for year {0} - module {1}".format(yy, mod_code))
         url = "http://iinei.inei.gob.pe/iinei/srienaho/descarga/{0}/{1}-Modulo{2}.zip".format(kind,survey_codes["enaho_{0}".format(yy)], mod_code)
-        print(url)
         try:
             urlretrieve(url, "Trash/module {0} {1}.zip".format(mod_code,yy))
-            print("DONE")
         except:
             if yy <2003 and mod_code == "85":
-                print("module 85 not available for this year")
+                print("module 85 not available for year {0}".format(yy))
             else:
                 print("ERROR")
                 errors.append(url)
-print("Scrapping complete. {0} errors:".format(len(errors))) 
+print("Scrapping complete. {0} errors:".format(len(errors)))
 print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
@@ -80,7 +78,9 @@ for mod_code in mod_codes:
         os.mkdir(new_dir)
     except:
         os.mkdir(new_dir)
-    for yy in range(1997,2018):
+
+for yy in range(1997,2019):
+    for mod_code in mod_codes:
         if yy <2003 and mod_code == "85":
             print("module 85 not available for this year")
             continue
@@ -97,21 +97,20 @@ for mod_code in mod_codes:
             try:
                 zip_ref.extract(file_name, "Enaho/in/Raw Data/module {0}/{1}".format(mod_code, yy))
             except:
-                print("could not extract {1} for year {0}".format(yy, file_name))
+                print("could not extract {0} for year {1}".format(file_name, yy))
                 errors.append(file_name)
         zip_ref.close()
-print("Scrapping complete. {0} errors:".format(len(errors))) 
+print("Scrapping complete. {0} errors:".format(len(errors)))
 print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
 #Around 30s (=1 min)
 
-#3. Remove redundant encolsing folder  (only a problem for some years)
+#3. Remove redundant enclosing folder  (only a problem for some years)
 start_time = time.time()
 errors = []
-for mod_code in mod_codes:
-    print(mod_code)
-    for yy in range(1997,2018):
+for yy in range(1997,2019):
+    for mod_code in mod_codes:
         if yy <2003 and mod_code == "85":
             print("module 85 not available for this year")
             continue
@@ -143,7 +142,7 @@ errors=[]
 for mod_code in mod_codes:
     print("-  -  -  -  -  -  -  ")
     print(mod_code)
-    for yy in range(1997,2017):
+    for yy in range(1997,2019):
         print("----")
         print(yy)
         if yy <2003 and mod_code == "85":
@@ -206,7 +205,7 @@ print("This takes {0}s".format(ellapsed))
 start_time = time.time()
 errors=[]
 for mod_code in mod_codes:
-    for yy in range(1997,2018):
+    for yy in range(1997,2019):
         if mod_code == "85": #we deal with files from this module in a special way: convert the "yy-1" dataset
             if yy<2003:
                 print("module 85 not available for this year")
@@ -229,7 +228,7 @@ print("This takes {0}s".format(ellapsed))
 #Less than 1s
 
 #6 Take out the Trash
-for yy in range(1997,2018):
+for yy in range(1997,2019):
     for mod_code in mod_codes:
         zip_file = "Trash/module {0} {1}.zip".format(mod_code, yy)
-        os.remove(zip_file)
+os.remove(zip_file)
