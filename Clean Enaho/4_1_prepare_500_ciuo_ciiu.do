@@ -81,7 +81,7 @@ gen g_hl_ciiu = .
 label define g_hl_ciiu 1 "I: Agriculture/Fishing" 2 "II: Mining/Manufacturing/Utilities" 3 "III: Construction" 4 "IV: Commerce/Transportation/Restaurants" 5 "V: Telecom" 6 "VI: Finance" 7 "VII: Real Estate" 8 "VIII: Professional/Research/Private Admin" 9 "IX: Public Admin/Teaching/Health" 10 "X: Other services"
 label values g_hl_ciiu g_hl_ciiu		
 
-*3. High-level ciuo groups (based on Lavado, Martinez and Yamada "promesa incumplida" 2014 wp (Table XX))
+*3. High-level ciuo groups (based on Lavado, Martinez and Yamada's "promesa incumplida" 2014 wp (Table XX))
 gen g_ciuo = .
 	*-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
 	replace g_ciuo = 1 if ciuo_code == "11" | ciuo_code == "12" | ciuo_code == "13" 
@@ -112,5 +112,3 @@ gen g_ciuo = .
 	*-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  	
 label define g_ciuo 1 "Cognitive/Non routine" 2 "Manual/Non routine" 3 "Cognitive/routine" 4 "Manual/routine"
 label values g_ciuo g_ciuo
-
-
