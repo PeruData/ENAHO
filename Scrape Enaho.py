@@ -37,7 +37,7 @@ survey_codes = {
 }
 mod_codes = ["01","02","03","05","34","85"]
 
-root = "/Users/Sebastian/Documents/Papers/Mines/00_Data"
+root = "/Users/Sebastian/Downloads/temp"
 os.chdir(root)
 try:
     os.mkdir("Trash")
@@ -61,7 +61,7 @@ for yy in range(1997,2019):
             else:
                 print("ERROR")
                 errors.append(url)
-print("Scrapping complete. {0} errors:".format(len(errors)))
+print("Scraping complete. {0} errors:".format(len(errors)))
 print(errors)
 ellapsed = time.time() - start_time
 print("This takes {0}s".format(ellapsed))
@@ -70,6 +70,14 @@ print("This takes {0}s".format(ellapsed))
 #2. Extract zip files
 start_time = time.time()
 errors = []
+try:
+    shutil.rmtree("Enaho")
+    os.mkdir("Enaho")
+except:
+    os.mkdir("Enaho")
+os.mkdir("Enaho/in")
+os.mkdir("Enaho/in/Raw Data")
+
 for mod_code in mod_codes:
     new_dir = "Enaho/in/Raw Data/module {0}".format(mod_code)
     try:
@@ -157,7 +165,7 @@ for yy in range(1997,2019):
                     df.columns = [column.lower() for column in df.columns]
                     df.columns = [column.replace("\x00", "") for column in df.columns]
                     df.columns = [column.replace(" ", "") for column in df.columns]
-                    df.to_stata(dta_fn,      encoding = "latin1")
+                    df.to_stata(dta_fn)#df.to_stata(dta_fn,      encoding = "latin1")
                     print("{0} converted to dta".format(file))
                     #os.remove(dbf_fn)
                 except:
@@ -182,10 +190,10 @@ for yy in range(1997,2019):
                         current_df.columns = [column.lower() for column in current_df.columns]
                         current_df.columns = [column.replace("\x00", "") for column in current_df.columns]
                         current_df.columns = [column.replace(" ", "") for column in current_df.columns]
-                        current_df.to_stata(current_dta,      encoding = "latin1")
+                        current_df.to_stata(current_dta)#current_df.to_stata(current_dta,      encoding = "latin1")
                 merge_vars = ["conglome","vivienda","hogar","codperso"]
                 df = df1.merge(df2, on = merge_vars)
-                df.to_stata(dta_fn, encoding = "latin1")
+                df.to_stata(dta_fn)#df.to_stata(dta_fn, encoding = "latin1")
                 print("{0} converted to dta".format(current_df))
                 #os.remove(dbf_fn)
             except:
