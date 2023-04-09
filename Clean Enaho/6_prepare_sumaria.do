@@ -3,7 +3,6 @@
 *1. Clean
 *-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - 
 *Missing values for certain month-years are 100% by design 
-*Do Manski bounds on these
 
 *These variables' names are stable across 1997-2018
 local key_vars conglome vivienda hogar
