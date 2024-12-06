@@ -1,9 +1,9 @@
 ###########################################################################################################
 # Peruvian Households Dataset
 # Author: Sebastian Sardon
-# Last updated: June 16, 2019
+# Last updated: December 4, 2024
 # Retrieves raw ENAHO data from INEI's official website
-# Reference period: 1997-2018 (these are all the years for which complete surveys are available)
+# Reference period: 1997-2023 (these are all the years for which complete surveys are available)
 ###########################################################################################################
 
 #import dbf
@@ -16,9 +16,10 @@ import re
 import shutil
 import time
 import zipfile
-from  simpledbf import Dbf5
-from urllib.request import urlretrieve
-
+from   simpledbf import Dbf5
+from   urllib.request import urlretrieve
+from   urllib.request import urlopen
+import urllib.request
 
 #Codes for surveys of the class "ENAHO Metodología ACTUALIZADA"
 #These are rather unstructured, so codes are obtained manually from INEI's webpage
@@ -44,6 +45,8 @@ try:
 except:
     print("Folder already exists")
 
+sample_url = "https://proyectos.inei.gob.pe/iinei/srienaho/descarga/DBF/04-Modulo01.zip"
+
 #1. Scrape zip files
 start_time = time.time()
 errors = []
@@ -52,9 +55,13 @@ for yy in range(1997,2019):
         if yy < 2004: kind = "DBF"
         else:         kind   = "STATA"
         print("retrieving data for year {0} - module {1}".format(yy, mod_code))
-        url = "http://iinei.inei.gob.pe/iinei/srienaho/descarga/{0}/{1}-Modulo{2}.zip".format(kind,survey_codes["enaho_{0}".format(yy)], mod_code)
+        url = "https://proyectos.inei.gob.pe/iinei/srienaho/descarga/{0}/{1}-Modulo{2}.zip".format(kind,survey_codes["enaho_{0}".format(yy)], mod_code)
+        #url = 'https://proyectos.inei.gob.pe/iinei/srienaho/descarga/DBF/04-Modulo01.zip'
         try:
-            urlretrieve(url, "Trash/module {0} {1}.zip".format(mod_code,yy))
+            #urlretrieve(url, "Trash/module {0} {1}.zip".format(mod_code,yy)) #ONE-LINER NO LONGER WORRKING AS OF DEC-2024, NEED TO USE THE 3 LINES BELOW INSTEAD
+            resp = urlopen(url)
+            with open("Trash/module {0} {1}.zip".format(mod_code,yy), 'wb') as f:
+              f.write(resp.read())
         except:
             if yy <2003 and mod_code == "85":
                 print("module 85 not available for year {0}".format(yy))
